@@ -36,7 +36,7 @@ export const Login: React.FC = () => {
   return (
     <div className="min-h-screen bg-linear-gradient-to-br justify-between gap-6 from-background to-secondary flex items-center p-4">
       <div className="w-full h-screen">
-        <img className="w-full h-full" src="./download.jpg" alt="" />
+        <img className="w-full h-full" src="./login-bg.jpg" alt="" />
       </div>
       <div className="w-full flex flex-col items-center bg-gray-100 justify-center border-2 border-border rounded-lg bg-background/80 shadow-2xl p-6 h-screen mx-auto">
       <div>

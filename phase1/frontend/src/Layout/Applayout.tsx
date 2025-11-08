@@ -29,7 +29,7 @@ export default function AppLayout(){
               <div className="w-full flex justify-end">
 <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors text-sm font-medium"
+                className="px-4 py-2 bg-destructive text-destructive-foreground bg-black text-white rounded-2xl hover:bg-destructive/90 transition-colors text-sm font-medium cursor-pointer"
               >
                 Logout
               </button>
