@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Updated color palette for a more polished, professional look */
+  --background: 210 40% 98%;             /* soft light blue background */
+  --foreground: 220 8% 16%;              /* dark slate text color */
+  --card: 0 0% 100%;                     /* white cards */
+  --card-foreground: 220 8% 16%;         /* dark text on cards */
+  --primary: 217 91% 60%;                /* vibrant blue for highlights */
+  --primary-foreground: 0 0% 100%;       /* white text on primary */
+  --secondary: 210 40% 96%;              /* light gray-blue panels */
+  --secondary-foreground: 220 8% 16%;    /* dark text on secondary */
+  --muted: 210 40% 90%;                  /* muted backgrounds */
+  --muted-foreground: 220 8% 50%;        /* muted text */
+  --accent: 152 60% 45%;                 /* green accent for success/links */
+  --accent-foreground: 0 0% 100%;        /* white text on accent */
+  --destructive: 0 75% 60%;              /* red for destructive actions */
+  --destructive-foreground: 0 0% 100%;   /* white text on destructive */
+  --border: 210 40% 90%;                 /* light borders */
+  --input: 210 40% 96%;                  /* input backgrounds */
+  --ring: 217 91% 60%;                   /* focus ring color */
+  --radius: 0.5rem;
+}
+
+/* * {
+  @apply border-border;
+} */
+
+/* body {
+  @apply bg-background text-foreground;
+} */

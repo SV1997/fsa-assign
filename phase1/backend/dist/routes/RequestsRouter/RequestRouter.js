@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.requestsRouter = void 0;
+const express_1 = require("express");
+const verifyJWT_1 = require("../../middleware/verifyJWT");
+const RequestController_1 = require("../../controller/RequestContoller/RequestController");
+const router = (0, express_1.Router)();
+router.get('/getRequests', verifyJWT_1.verifyJWT, RequestController_1.getAllRequestsController);
+router.get('/getRequest/:id', verifyJWT_1.verifyJWT, RequestController_1.getRequestController);
+router.post('/createRequest', verifyJWT_1.verifyJWT, RequestController_1.createRequestController);
+router.patch('/approveRequest', verifyJWT_1.verifyJWT, verifyJWT_1.autheticateRole, RequestController_1.approveRequestController);
+router.patch('/rejectRequest', verifyJWT_1.verifyJWT, verifyJWT_1.autheticateRole, RequestController_1.rejectRequestController);
+router.delete('/deleteRequest', verifyJWT_1.verifyJWT, verifyJWT_1.autheticateRole);
+exports.requestsRouter = router;

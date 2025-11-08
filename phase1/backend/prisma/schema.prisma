@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String  @id @default(cuid())
+  name      String
+  email     String  @unique
+  password  String  // hashed, even if simulated
+  role      Role @default(STUDENT)
+  createdAt DateTime @default(now())
+  Requests  Request[]
+  Loans     Loan[]
+}
+
+enum Role {
+  STUDENT
+  STAFF
+  ADMIN
+}
+
+model Equipment {
+  id         String  @id @default(cuid())
+  name       String
+  category   String
+  condition  String
+  quantity   Int      // total items
+  available  Int      // derived but stored for speed
+  createdAt  DateTime @default(now())
+  Requests   Request[]
+  Loans      Loan[]
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  ISSUED
+  RETURNED
+}
+
+model Request {
+  id          String   @id @default(cuid())
+  requesterId String
+  equipmentId String
+  status      RequestStatus @default(PENDING)
+  from        DateTime
+  to          DateTime
+  createdAt   DateTime @default(now())
+  requester   User     @relation(fields: [requesterId], references: [id])
+  equipment   Equipment @relation(fields: [equipmentId], references: [id])
+  loan        Loan?
+}
+
+model Loan {
+  id          String   @id @default(cuid())
+  requestId   String   @unique
+  equipmentId String
+  borrowerId  String
+  from        DateTime
+  to          DateTime
+  returnedAt  DateTime?
+  createdAt   DateTime @default(now())
+  request     Request  @relation(fields: [requestId], references: [id])
+  equipment   Equipment @relation(fields: [equipmentId], references: [id])
+  borrower    User     @relation(fields: [borrowerId], references: [id])
+  @@index([equipmentId, from, to])
+}
