@@ -2,16 +2,15 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { useAuth } from "../context/AuthContext"
 import type { Equipment } from "../types"
 import { fetchRequesDelete, fetchRequesPost, fetchRequesPut, fetchRequestGet } from "../common/NetworkOps"
-import { getEquipment, createEquipment, updateEquipment, deleteEquipment } from "../services/api"
 
 export const EquipmentManager: React.FC = () => {
   const token = sessionStorage.getItem("accessToken") || '';
   const [equipment, setEquipment] = useState<Equipment[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
+  const [categaries, setCategaries] = useState<string[]>([])
   const [editingId, setEditingId] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     name: "",
@@ -106,14 +105,17 @@ export const EquipmentManager: React.FC = () => {
       {showForm && (
         <form onSubmit={handleSubmit} className="mb-6 p-4 bg-secondary rounded-lg border border-border">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label htmlFor="name">Name</label>
             <input
               type="text"
+              id="name"
               placeholder="Equipment Name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
               className="px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             />
+            <label htmlFor="category">Category</label>
             <input
               type="text"
               placeholder="Category"
@@ -122,14 +124,18 @@ export const EquipmentManager: React.FC = () => {
               required
               className="px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             />
+            <label htmlFor="condition">Condition</label>
             <textarea
+              id="condition"
               placeholder="Condition"
               value={formData.condition}
               onChange={(e) => setFormData({ ...formData, condition: e.target.value })}
               className="px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary md:col-span-2"
             />
+            <label htmlFor="quantity">Quantity</label>
             <input
               type="number"
+              id="quantity"
               placeholder="Total Quantity"
               value={formData.quantity}
               onChange={(e) => setFormData({ ...formData, quantity: Number.parseInt(e.target.value) })}
@@ -137,9 +143,10 @@ export const EquipmentManager: React.FC = () => {
               min="1"
               className="px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             />
-           
+            <label htmlFor="available">Available</label>
             <input
               type="number"
+              id="available"
               placeholder="Total Available"
               value={formData.available}
               onChange={(e) => setFormData({ ...formData, available: Number.parseInt(e.target.value) })}

@@ -25,8 +25,10 @@ export const Signup: React.FC = () => {
 
     try {
       await dispatch(signupUser({ email, password, name }))
-      navigate("/dashboard")
+      navigate("/login")
     } catch (err) {
+      console.log(err);
+      
       setError(err instanceof Error ? err.message : "Signup failed")
     } finally {
       setLoading(false)

@@ -12,6 +12,7 @@ export const EquipmentManager: React.FC = () => {
   const [equipment, setEquipment] = useState<Equipment[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
+  const [categaries, setCategaries] = useState<string[]>(["Chemistry", "Physics", "Biology", "Electronics"])
   const [editingId, setEditingId] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     name: "",
@@ -28,6 +29,8 @@ export const EquipmentManager: React.FC = () => {
   const loadEquipment = async () => {
     try {
       setLoading(true)
+      // const categaryData:any = (await fetchRequestGet('/equipment/getcategories'));;
+      // setCategaries(categaryData.categories || [])
       const data:any = (await fetchRequestGet('/equipment/getallequipment'));;
       setEquipment(data.equipment || [])
     } catch (error) {
@@ -45,6 +48,7 @@ export const EquipmentManager: React.FC = () => {
       let res;
       if (editingId) {
         res=await fetchRequesPut("/equipment/updateequipment",{ id: editingId, ...formData})
+        console.log(res);
       } else {
         res=await fetchRequesPost("/equipment/addequipment",{ ...formData})
       }
@@ -71,7 +75,8 @@ export const EquipmentManager: React.FC = () => {
     }
   }
 
-  const handleEdit = (item: Equipment) => {
+  const handleEdit = (item: Equipment) => {    
+    setEditingId(item.id)
     setFormData({
       name: item.name,
       condition: item.condition,
@@ -79,7 +84,6 @@ export const EquipmentManager: React.FC = () => {
       quantity: item.quantity,
       available: item.available,
     })
-    setEditingId(item.id)
     setShowForm(true)
   }
 
@@ -106,30 +110,49 @@ export const EquipmentManager: React.FC = () => {
       {showForm && (
         <form onSubmit={handleSubmit} className="mb-6 p-4 bg-secondary rounded-lg border border-border">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-col">
+            <label htmlFor="name">Equipment Name</label>
             <input
               type="text"
+              id="name"
               placeholder="Equipment Name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
               className="px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             />
-            <input
-              type="text"
-              placeholder="Category"
+            </div>
+            <div className="flex flex-col">
+            <label htmlFor="category">Category</label>
+            <select
+              id="category"
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
               required
               className="px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-            />
+            >
+              <option value="" disabled>Select Category</option>
+              {categaries.map((cat:any)=>(
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+              </select>
+              
+            </div>
+            <div className="flex flex-col">
+            <label htmlFor="condition">Condition</label>
             <textarea
+              id="condition"
               placeholder="Condition"
               value={formData.condition}
               onChange={(e) => setFormData({ ...formData, condition: e.target.value })}
               className="px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary md:col-span-2"
             />
+            </div>
+            <div className="flex flex-col">
+            <label htmlFor="quantity">Quantity</label>
             <input
               type="number"
+              id="quantity"
               placeholder="Total Quantity"
               value={formData.quantity}
               onChange={(e) => setFormData({ ...formData, quantity: Number.parseInt(e.target.value) })}
@@ -137,9 +160,12 @@ export const EquipmentManager: React.FC = () => {
               min="1"
               className="px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             />
-           
+            </div>
+            <div className=" flex flex-col">
+            <label htmlFor="available">Available</label>
             <input
               type="number"
+              id="available"
               placeholder="Total Available"
               value={formData.available}
               onChange={(e) => setFormData({ ...formData, available: Number.parseInt(e.target.value) })}
@@ -147,6 +173,7 @@ export const EquipmentManager: React.FC = () => {
               min="0"
               className="px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             />
+            </div>
           </div>
           <button
             type="submit"

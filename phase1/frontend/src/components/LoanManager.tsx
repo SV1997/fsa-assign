@@ -54,7 +54,7 @@ export const LoanManager: React.FC = () => {
             onClick={() => setFilter(status)}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               filter === status
-                ? "bg-primary text-primary-foreground"
+                ? "bg-primary bg-blue-500 text-white text-primary-foreground"
                 : "bg-secondary text-foreground hover:bg-secondary/80"
             }`}
           >

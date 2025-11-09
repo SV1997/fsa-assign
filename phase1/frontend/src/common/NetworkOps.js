@@ -21,7 +21,9 @@ const authRoutes=[
   config.auth.DELETE_USER_URL,
     config.auth.GET_AVAILABLE_EQUIPMENT_COUNT_URL,
   config.auth.GET_NUMBER_OF_PENDING_REQUESTS_URL,
-  config.auth.GET_NUMBER_OF_PENDING_LOANS_URL
+  config.auth.GET_NUMBER_OF_PENDING_LOANS_URL,
+  config.equipment.GET_ALL_EQUIPMENT_URL,
+  config.equipment.GET_ALL_EQUIPMENT_CATEGORIES_URL,
 ]
 axios.interceptors.request.use(
   (config) => {

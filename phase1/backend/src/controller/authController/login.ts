@@ -40,6 +40,8 @@ return accessToken;
 
 const signupController = async (req: Request, res: Response) => {
     const {name,email, password} = req.body;
+    console.log("signup");
+    
     try {
         const existingUser = await prisma.user.findUnique({
             where:{email}
@@ -60,6 +62,8 @@ const signupController = async (req: Request, res: Response) => {
     return res.status(200).json({message: 'signup successful', user: newUser, role: newUser.role, accessToken: accessToken});
         // return res.status(201).json({message: 'User created successfully', user: newUser});
     } catch (error) {
+        console.log(error);
+        
         return res.status(500).json({message: 'Internal server error'});
     }
 }

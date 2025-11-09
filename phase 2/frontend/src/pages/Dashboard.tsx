@@ -7,7 +7,7 @@ import { StudentDashboard } from "../components/StudentDashboard"
 import { fetchRequestGet } from "../common/NetworkOps"
 import { useEffect, useState } from "react"
 export const Dashboard: React.FC = () => {
-  const { user } = useSelector((state: any) => state.auth.user)
+  const { user } = useSelector((state: any) => state.auth)
   const firstName = user?.name?.split(" ")[0] || "there"
   const role = user?.role || "STUDENT"
   const isAdmin = role === "ADMIN"
@@ -100,7 +100,7 @@ export const Dashboard: React.FC = () => {
 
       {/* Existing detailed dashboards */}
       <section className="mt-4">
-        {isAdmin ? <AdminDashboard /> : <StudentDashboard />}
+        {user.role==="ADMIN" ? <AdminDashboard /> : <StudentDashboard />}
       </section>
     </div>
   )

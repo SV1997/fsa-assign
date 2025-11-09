@@ -16,7 +16,7 @@ export const createRequestController = async (req: Request, res: Response) => {
             }
         },)
         
-        res.status(201).json({message:"Request created successfully", request: newRequest})
+        res.status(200).json({message:"Request created successfully", request: newRequest})
     } catch (error) {
         console.log(error);
         
@@ -57,7 +57,8 @@ export const getRequestController = async (req: Request, res: Response) => {
             return res.status(400).json({ message: 'Requester id is required' });
         }
         const request = await prisma.request.findMany({
-            where: { requesterId: requesterId }
+            where: { requesterId: requesterId },
+            include: { equipment: true }
         });
         console.log(request);
         
@@ -81,6 +82,15 @@ export const approveRequestController = async (req: Request, res: Response) => {
             where: { id: requestId },
             data:{
                 status: 'APPROVED'
+            }
+        })
+        const CreateLoans = await prisma.loan.create({
+            data:{
+                requestId: updateRequest.id,
+                equipmentId: updateRequest.equipmentId,
+                borrowerId: updateRequest.requesterId,
+                from: updateRequest.from,
+                to: updateRequest.to
             }
         })
         res.status(200).json({message:"Request approved successfully", request: updateRequest})

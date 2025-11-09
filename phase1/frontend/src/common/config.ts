@@ -21,7 +21,10 @@ export default {
         DELETE_USER_URL:`${baseURL}/users/delete-user`,
         GET_AVAILABLE_EQUIPMENT_COUNT_URL:`${baseURL}/equipment/available-count`,
         GET_NUMBER_OF_PENDING_REQUESTS_URL:`${baseURL}/requests/number-of-pending-requests`,
-        GET_NUMBER_OF_PENDING_LOANS_URL:`${baseURL}/loans/number-of-pending-loans`
-
+        GET_NUMBER_OF_PENDING_LOANS_URL:`${baseURL}/loans/number-of-pending-loans`,
+    },
+    equipment:{
+        GET_ALL_EQUIPMENT_URL:`${baseURL}/equipment/getallequipment`,
+        GET_ALL_EQUIPMENT_CATEGORIES_URL:`${baseURL}/equipment/getcategories`
     }
 }

@@ -47,7 +47,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NullsOrder = exports.QueryMode = exports.SortOrder = exports.LoanScalarFieldEnum = exports.RequestScalarFieldEnum = exports.EquipmentScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.NullsOrder = exports.QueryMode = exports.SortOrder = exports.LoanScalarFieldEnum = exports.RequestScalarFieldEnum = exports.CategoryScalarFieldEnum = exports.EquipmentScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -76,6 +76,7 @@ exports.AnyNull = runtime.objectEnumValues.instances.AnyNull;
 exports.ModelName = {
     User: 'User',
     Equipment: 'Equipment',
+    Category: 'Category',
     Request: 'Request',
     Loan: 'Loan'
 };
@@ -99,10 +100,15 @@ exports.UserScalarFieldEnum = {
 exports.EquipmentScalarFieldEnum = {
     id: 'id',
     name: 'name',
-    category: 'category',
+    categoryId: 'categoryId',
     condition: 'condition',
     quantity: 'quantity',
     available: 'available',
+    createdAt: 'createdAt'
+};
+exports.CategoryScalarFieldEnum = {
+    id: 'id',
+    name: 'name',
     createdAt: 'createdAt'
 };
 exports.RequestScalarFieldEnum = {

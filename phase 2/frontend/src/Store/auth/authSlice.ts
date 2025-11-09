@@ -13,8 +13,9 @@ try
 
 export const  signupUser = createAsyncThunk('auth/signupUser', async (data: { name: string; password: string; email: string }) => {
 try
-    {  const response = await fetchRequesPost('/auth/signup', JSON.stringify(data));
-  return response.data;}
+    {  const response:any = await fetchRequesPost('/auth/signup', JSON.stringify(data));
+        
+  return response.user;}
   catch(error){
     throw error;
   }
@@ -83,10 +84,11 @@ const authSlice = createSlice({
             state.success = false;
         });
         builder.addCase(signupUser.fulfilled, (state, action) => {
+            console.log(action.payload);
             
             state.isAuthenticated = true;
             sessionStorage.setItem("accessToken", action.payload.accessToken);
-            state.user = action.payload.user;
+            state.user = action.payload;
             state.success = true;
             state.loading = false;
             state.error = null;

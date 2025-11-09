@@ -9,30 +9,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteRequestController = exports.rejectRequestController = exports.approveRequestController = exports.getRequestController = exports.getAllRequestsController = exports.createRequestController = void 0;
+exports.deleteRequestController = exports.rejectRequestController = exports.approveRequestController = exports.getRequestController = exports.getAllPendingRequestsController = exports.getAllRequestsController = exports.createRequestController = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createRequestController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = req.body;
+        console.log(data);
         const newRequest = yield prisma.request.create({
             data: {
                 equipmentId: data.equipmentId,
-                requesterId: data.requestId,
-                from: data.fromDate,
-                to: data.toDate,
+                requesterId: data.requesterId,
+                from: new Date(data.from),
+                to: new Date(data.to),
             }
         });
         res.status(201).json({ message: "Request created successfully", request: newRequest });
     }
     catch (error) {
-        res.status(500).json({ message: "internal server error" });
+        console.log(error);
+        res.status(500).json({ message: "internal server error", error: error });
     }
 });
 exports.createRequestController = createRequestController;
 const getAllRequestsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const requests = yield prisma.request.findMany();
+        const requests = yield prisma.request.findMany({ include: { equipment: true, requester: true } });
+        console.log(requests);
         res.status(200).json({ message: "Requests fetched successfully", requests });
     }
     catch (error) {
@@ -40,21 +43,38 @@ const getAllRequestsController = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.getAllRequestsController = getAllRequestsController;
+const getAllPendingRequestsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const requests = yield prisma.request.findMany({
+            where: { status: 'PENDING' },
+        }).then(requests => requests.length);
+        console.log(requests);
+        res.status(200).json({ message: "Requests fetched successfully", requests });
+    }
+    catch (error) {
+        res.status(500).json({ message: "internal server error" });
+    }
+});
+exports.getAllPendingRequestsController = getAllPendingRequestsController;
 const getRequestController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const requestId = req.params.id;
-        if (!requestId) {
-            return res.status(400).json({ message: 'Request id is required' });
+        const requesterId = req.query.id;
+        console.log(requesterId);
+        if (!requesterId) {
+            return res.status(400).json({ message: 'Requester id is required' });
         }
-        const request = yield prisma.request.findUnique({
-            where: { id: requestId }
+        const request = yield prisma.request.findMany({
+            where: { requesterId: requesterId },
+            include: { equipment: true }
         });
+        console.log(request);
         if (!request) {
             return res.status(404).json({ message: 'Request not found' });
         }
         res.status(200).json({ message: 'Request fetched successfully', request });
     }
     catch (error) {
+        console.log(error);
         res.status(500).json({ message: 'internal server error' });
     }
 });
@@ -62,6 +82,7 @@ exports.getRequestController = getRequestController;
 const approveRequestController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const requestId = req.body.id;
+        console.log(requestId);
         const updateRequest = yield prisma.request.update({
             where: { id: requestId },
             data: {
@@ -92,14 +113,18 @@ const rejectRequestController = (req, res) => __awaiter(void 0, void 0, void 0, 
 });
 exports.rejectRequestController = rejectRequestController;
 const deleteRequestController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = req.query.id;
+    console.log(data);
     try {
+        console.log("delete");
         const requestData = req.body;
         const deleteRequest = yield prisma.request.delete({
-            where: { id: requestData.id }
+            where: { id: data }
         });
         res.status(200).json({ message: "Request deleted successfully" });
     }
     catch (error) {
+        console.log(error);
         res.status(500).json({ message: 'internal server error' });
     }
 });

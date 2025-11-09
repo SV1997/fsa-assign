@@ -34,7 +34,8 @@ enum Role {
 model Equipment {
   id         String  @id @default(cuid())
   name       String
-  category   String
+  // category   Category @relation(fields: [categoryId], references: [id])
+  category String
   condition  String
   quantity   Int      // total items
   available  Int      // derived but stored for speed
@@ -42,6 +43,13 @@ model Equipment {
   Requests   Request[]
   Loans      Loan[]
 }
+
+// model Category {
+//   id         String      @id @default(cuid())
+//   name       String      @unique
+//   createdAt  DateTime    @default(now())
+//   equipments Equipment[]
+// }
 
 enum RequestStatus {
   PENDING

@@ -24,6 +24,7 @@ const loginController = (req, res) => __awaiter(void 0, void 0, void 0, function
             return res.status(401).json({ message: 'User not found' });
         }
         const isValidPassword = yield bcrypt.compare(password, user.password);
+        console.log(isValidPassword);
         if (!isValidPassword) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
@@ -31,7 +32,8 @@ const loginController = (req, res) => __awaiter(void 0, void 0, void 0, function
         return res.status(200).json({ message: 'Login successful', user, role: user.role, accessToken: accessToken });
     }
     catch (error) {
-        return res.status(500).json({ message: 'Internal server error' });
+        console.log(error);
+        return res.status(500).json({ message: error });
     }
 });
 const signAccessToken = (userId, role) => {
@@ -56,7 +58,9 @@ const signupController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 role: 'STUDENT'
             }
         });
-        return res.status(201).json({ message: 'User created successfully', user: newUser });
+        const accessToken = signAccessToken(newUser.id, newUser.role);
+        return res.status(200).json({ message: 'signup successful', user: newUser, role: newUser.role, accessToken: accessToken });
+        // return res.status(201).json({message: 'User created successfully', user: newUser});
     }
     catch (error) {
         return res.status(500).json({ message: 'Internal server error' });

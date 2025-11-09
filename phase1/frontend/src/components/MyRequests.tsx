@@ -72,12 +72,12 @@ export const MyRequests: React.FC = () => {
               <div className="text-sm text-muted-foreground">
                 <p>From: {new Date(request.from).toLocaleDateString()}</p>
                 <p>To: {new Date(request.to).toLocaleDateString()}</p>
-                <p>Requested: {new Date(request.createdAt).toLocaleDateString()}</p>
+                <p>Requested: {request.equipment?.name} </p>
                 {request.approvedAt && <p>Approved: {new Date(request.approvedAt).toLocaleDateString()}</p>}
               </div>
-              <button onClick={()=>{
+              {/* <button onClick={()=>{
                 deleteRequest(request.id);
-              }} className="text-white bg-red-500 px-2 py-2 rounded-3xl">Delete</button>
+              }} className="text-white bg-red-500 px-2 py-2 rounded-3xl">Delete</button> */}
             </div>
           ))
         )}

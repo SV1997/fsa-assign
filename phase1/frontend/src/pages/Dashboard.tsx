@@ -7,10 +7,11 @@ import { StudentDashboard } from "../components/StudentDashboard"
 import { fetchRequestGet } from "../common/NetworkOps"
 import { useEffect, useState } from "react"
 export const Dashboard: React.FC = () => {
-  const { user } = useSelector((state: any) => state.auth.user)
+  const { user } = useSelector((state: any) => state.auth)
+  console.log(user);
+  
   const firstName = user?.name?.split(" ")[0] || "there"
   const role = user?.role || "STUDENT"
-  const isAdmin = role === "ADMIN"
   const [availableEquipment, setAvailableEquipment] =useState<number | null>(null);
   const [pendingRequests, setPendingRequests] =useState<number | null>(null);
   const [pendingsLoans, setPendingsLoans] =useState<number | null>(null);
@@ -40,28 +41,24 @@ export const Dashboard: React.FC = () => {
             Welcome back, {firstName} 👋
           </p>
           <h1 className="mt-1 text-2xl md:text-3xl font-semibold text-slate-900">
-            {isAdmin ? "Admin overview" : "Your equipment overview"}
+            {user.role=== "ADMIN" ? "Admin overview" : "Your equipment overview"}
           </h1>
           <p className="mt-2 text-sm text-slate-500 max-w-xl">
-            {isAdmin
+            {user.role=== "ADMIN"
               ? "Monitor inventory, approve student requests, and manage active loans for your campus."
               : "Browse available equipment, check request status, and keep track of your active loans."}
           </p>
         </div>
 
         <div className="flex flex-wrap gap-3">
-          {!isAdmin && (
+          {!(user.role=== "ADMIN") && (
             <button
               className="px-4 py-2 rounded-full bg-sky-600 text-white text-sm font-semibold hover:bg-sky-700 transition-colors"
             >
               + New Request
             </button>
           )}
-          {isAdmin && (
-            <button className="px-4 py-2 rounded-full border border-slate-300 text-sm font-semibold text-slate-700 hover:bg-slate-50">
-              View pending approvals
-            </button>
-          )}
+
         </div>
       </section>
 
@@ -100,7 +97,7 @@ export const Dashboard: React.FC = () => {
 
       {/* Existing detailed dashboards */}
       <section className="mt-4">
-        {isAdmin ? <AdminDashboard /> : <StudentDashboard />}
+        {user.role=== "ADMIN" ? <AdminDashboard /> : <StudentDashboard />}
       </section>
     </div>
   )
